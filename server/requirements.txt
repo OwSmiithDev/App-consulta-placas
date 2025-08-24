@@ -1,7 +1,6 @@
 Flask
+Flask-Cors
 python-dotenv
+supabase-client
 supabase
-pytesseract
-opencv-python-headless
-Pillow
-numpy
+gunicorn
