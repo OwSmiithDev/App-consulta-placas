@@ -123,13 +123,8 @@
         const manualSearchBtn = document.getElementById('manual-search-btn');
 
         // --- CONFIGURAÇÕES DO SUPABASE ---
-        const SUPABASE_URL = 'https://wnsgwpxubukcbnlmoukk.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Induc2d3cHh1YnVrY2JubG1vdWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5OTMxMTMsImV4cCI6MjA3MTU2OTExM30.ZsH3nxfZf3hrHPbNShnyl3-4KIxr6NSl9fSFiCR8ylY';
-
-        // --- INICIALIZAÇÃO DO CLIENTE SUPABASE ---
-        const { createClient } = supabase;
-        const dbClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('Cliente Supabase inicializado.');
+          // --- CONFIGURAÇÕES ---
+        const API_URL = 'https://leitor-de-placas-api.onrender.com'; // ATENÇÃO: Use o IP do seu computador aqui
 
         // --- EVENTOS ---
         manualSearchBtn.addEventListener('click', () => {
@@ -196,5 +191,6 @@
         }
     </script>
 </body>
+
 
 </html>
