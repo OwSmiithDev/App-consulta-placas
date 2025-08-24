@@ -1,12 +1,11 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Placas</title>
+    <title>Leitor de Placas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cliente Supabase para conexão direta com o banco de dados -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -36,6 +35,12 @@
             }
         }
 
+        #preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
         button:disabled {
             cursor: not-allowed;
             background-color: #4B5563;
@@ -44,7 +49,7 @@
 </head>
 
 <body class="text-gray-200">
-    <div class="w-full max-w-md mx-auto p-4 min-h-screen flex flex-col justify-center">
+    <div class="w-full max-w-md mx-auto p-4 min-h-screen">
         <!-- Cabeçalho -->
         <header class="text-center py-6 space-y-3">
             <div class="flex items-center justify-center space-x-3">
@@ -63,15 +68,57 @@
                         <circle cx="17" cy="17" r="2"></circle>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-white">Consulta de Placas</h1>
+                <h1 class="text-3xl font-bold text-white">Leitor de Placas</h1>
             </div>
             <p class="text-gray-400 text-sm max-w-xs mx-auto">
-                Digite a placa do veículo para consultar as informações.
+                Use a câmera do seu dispositivo para capturar e consultar informações de placas veiculares.
             </p>
         </header>
 
         <!-- Corpo Principal -->
         <main class="bg-gray-800 rounded-xl p-5 space-y-4">
+            <h2 class="font-semibold text-white">Câmera de Captura</h2>
+
+            <div id="capture-area" class="space-y-4">
+                <div id="image-preview-container"
+                    class="aspect-video bg-gray-900/50 rounded-lg flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-600">
+                    <img id="preview-image" src="" alt="Pré-visualização da placa" class="hidden" />
+                    <div id="initial-placeholder">
+                        <svg class="w-12 h-12 mb-2 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <p class="text-sm text-center">Clique abaixo para usar a câmera</p>
+                    </div>
+                </div>
+
+                <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden">
+
+                <button id="activate-camera-btn"
+                    class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Escanear Placa com a Câmera
+                </button>
+            </div>
+
+            <!-- Divisor -->
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-600"></div>
+                <span class="flex-shrink mx-4 text-gray-400 text-xs">OU</span>
+                <div class="flex-grow border-t border-gray-600"></div>
+            </div>
+
             <!-- Consulta Manual -->
             <div id="manual-input-area" class="space-y-3">
                 <h2 class="font-semibold text-white text-center">Consulta Manual</h2>
@@ -93,7 +140,7 @@
             <div id="status-container"
                 class="bg-gray-900/50 p-4 rounded-lg min-h-[100px] flex flex-col items-center justify-center text-center space-y-2">
                 <div id="loader" class="loader hidden"></div>
-                <p id="status-text" class="text-gray-400 text-sm">Aguardando consulta...</p>
+                <p id="status-text" class="text-gray-400 text-sm">Pronto para escanear.</p>
                 <div id="result-container" class="hidden w-full text-left text-sm">
                     <div class="space-y-2">
                         <p class="flex justify-between"><strong>Placa:</strong> <span id="result-plate"
@@ -114,6 +161,10 @@
 
     <script>
         // --- ELEMENTOS DO DOM ---
+        const activateCameraButton = document.getElementById('activate-camera-btn');
+        const cameraInput = document.getElementById('camera-input');
+        const initialPlaceholder = document.getElementById('initial-placeholder');
+        const previewImage = document.getElementById('preview-image');
         const statusText = document.getElementById('status-text');
         const loader = document.getElementById('loader');
         const resultContainer = document.getElementById('result-container');
@@ -122,53 +173,85 @@
         const manualPlateInput = document.getElementById('manual-plate-input');
         const manualSearchBtn = document.getElementById('manual-search-btn');
 
-        // --- CONFIGURAÇÕES DO SUPABASE ---
-          // --- CONFIGURAÇÕES ---
+        // --- CONFIGURAÇÕES ---
         const API_URL = 'https://leitor-de-placas-api.onrender.com'; // ATENÇÃO: Use o IP do seu computador aqui
 
         // --- EVENTOS ---
+        activateCameraButton.addEventListener('click', () => cameraInput.click());
+        cameraInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) processImage(file);
+        });
+
         manualSearchBtn.addEventListener('click', () => {
             const plate = manualPlateInput.value.trim().toUpperCase();
             if (plate.length === 7) {
                 queryDatabase(plate);
             } else {
-                displayError('Por favor, digite uma placa válida (7 caracteres).');
+                statusText.textContent = 'Por favor, digite uma placa válida (7 caracteres).';
+                resultContainer.classList.add('hidden');
+                notFoundContainer.classList.add('hidden');
             }
         });
-
         manualPlateInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') {
-                manualSearchBtn.click();
-            }
+            if (event.key === 'Enter') manualSearchBtn.click();
         });
 
-        // --- CONSULTA DIRETA AO BANCO DE DADOS ---
+        // --- PROCESSAMENTO DE IMAGEM (ENVIAR PARA O BACKEND) ---
+        async function processImage(imageFile) {
+            const imageURL = URL.createObjectURL(imageFile);
+            initialPlaceholder.classList.add('hidden');
+            previewImage.src = imageURL;
+            previewImage.classList.remove('hidden');
+
+            resultContainer.classList.add('hidden');
+            notFoundContainer.classList.add('hidden');
+            loader.classList.remove('hidden');
+            statusText.textContent = 'Enviando imagem para análise...';
+
+            const formData = new FormData();
+            formData.append('file', imageFile);
+
+            try {
+                const response = await fetch(`${API_URL}/api/scan`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.data) {
+                    displaySuccess(result.data);
+                } else {
+                    displayError(result.message);
+                }
+
+            } catch (error) {
+                console.error("Erro ao enviar imagem:", error);
+                displayError('Erro de conexão com o servidor.');
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // --- CONSULTA MANUAL (DIRETO AO BACKEND) ---
         async function queryDatabase(plate) {
             loader.classList.remove('hidden');
             statusText.textContent = `Consultando placa: ${plate}...`;
             resultContainer.classList.add('hidden');
             notFoundContainer.classList.add('hidden');
-
             try {
-                // Realiza a consulta na tabela 'plates'
-                const { data, error } = await dbClient
-                    .from('plates')
-                    .select('*')
-                    .eq('plate_number', plate)
-                    .single(); // .single() retorna um único objeto ou null
+                const response = await fetch(`${API_URL}/api/plate/${plate}`);
+                const result = await response.json();
 
-                if (error && error.code !== 'PGRST116') { // PGRST116 é o código para "nenhuma linha encontrada", o que não é um erro
-                    throw error;
-                }
-
-                if (data) {
-                    displaySuccess(data);
+                if (response.ok && result.data) {
+                    displaySuccess(result.data);
                 } else {
-                    displayError(`A placa ${plate} não foi encontrada.`);
+                    displayError(result.message);
                 }
             } catch (error) {
-                console.error("Erro ao consultar o Supabase:", error);
-                displayError('Erro de conexão com o banco de dados.');
+                console.error("Erro ao consultar a API:", error);
+                displayError('Erro de conexão com o servidor.');
             } finally {
                 loader.classList.add('hidden');
             }
@@ -191,6 +274,5 @@
         }
     </script>
 </body>
-
 
 </html>
