@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leitor de Placas</title>
+    <title>Consulta de Placas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -35,12 +35,6 @@
             }
         }
 
-        #preview-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
         button:disabled {
             cursor: not-allowed;
             background-color: #4B5563;
@@ -50,16 +44,12 @@
 
 <body class="text-gray-200">
     <div class="w-full max-w-md mx-auto p-4 min-h-screen">
-        <!-- Cabeçalho -->
         <header class="text-center py-6 space-y-3">
             <div class="flex items-center justify-center space-x-3">
                 <div class="bg-blue-500 p-3 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-car w-8 h-8 text-white" data-lov-id="src/pages/PlateReaderApp.tsx:138:16"
-                        data-lov-name="Car" data-component-path="src/pages/PlateReaderApp.tsx" data-component-line="138"
-                        data-component-file="PlateReaderApp.tsx" data-component-name="Car"
-                        data-component-content="%7B%22className%22%3A%22w-8%20h-8%20text-white%22%7D">
+                        class="lucide lucide-car w-8 h-8 text-white">
                         <path
                             d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2">
                         </path>
@@ -68,60 +58,17 @@
                         <circle cx="17" cy="17" r="2"></circle>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-white">Leitor de Placas</h1>
+                <h1 class="text-3xl font-bold text-white">Consulta de Placas</h1>
             </div>
             <p class="text-gray-400 text-sm max-w-xs mx-auto">
-                Use a câmera do seu dispositivo para capturar e consultar informações de placas veiculares.
+                Digite a placa do veículo para consultar as informações.
             </p>
         </header>
 
-        <!-- Corpo Principal -->
         <main class="bg-gray-800 rounded-xl p-5 space-y-4">
-            <h2 class="font-semibold text-white">Câmera de Captura</h2>
-
-            <div id="capture-area" class="space-y-4">
-                <div id="image-preview-container"
-                    class="aspect-video bg-gray-900/50 rounded-lg flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-600">
-                    <img id="preview-image" src="" alt="Pré-visualização da placa" class="hidden" />
-                    <div id="initial-placeholder">
-                        <svg class="w-12 h-12 mb-2 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
-                            </path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <p class="text-sm text-center">Clique abaixo para usar a câmera</p>
-                    </div>
-                </div>
-
-                <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden">
-
-                <button id="activate-camera-btn"
-                    class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    Escanear Placa com a Câmera
-                </button>
-            </div>
-
-            <!-- Divisor -->
-            <div class="relative flex py-2 items-center">
-                <div class="flex-grow border-t border-gray-600"></div>
-                <span class="flex-shrink mx-4 text-gray-400 text-xs">OU</span>
-                <div class="flex-grow border-t border-gray-600"></div>
-            </div>
-
-            <!-- Consulta Manual -->
+            
             <div id="manual-input-area" class="space-y-3">
-                <h2 class="font-semibold text-white text-center">Consulta Manual</h2>
+                <h2 class="font-semibold text-white text-center">Digite a Placa</h2>
                 <div class="flex space-x-2">
                     <input type="text" id="manual-plate-input" placeholder="ABC1D23" maxlength="7"
                         class="w-full bg-gray-900/50 border-2 border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase text-center font-mono tracking-widest">
@@ -136,11 +83,10 @@
                 </div>
             </div>
 
-            <!-- Resultados -->
             <div id="status-container"
                 class="bg-gray-900/50 p-4 rounded-lg min-h-[100px] flex flex-col items-center justify-center text-center space-y-2">
                 <div id="loader" class="loader hidden"></div>
-                <p id="status-text" class="text-gray-400 text-sm">Pronto para escanear.</p>
+                <p id="status-text" class="text-gray-400 text-sm">Pronto para consultar.</p>
                 <div id="result-container" class="hidden w-full text-left text-sm">
                     <div class="space-y-2">
                         <p class="flex justify-between"><strong>Placa:</strong> <span id="result-plate"
@@ -161,10 +107,6 @@
 
     <script>
         // --- ELEMENTOS DO DOM ---
-        const activateCameraButton = document.getElementById('activate-camera-btn');
-        const cameraInput = document.getElementById('camera-input');
-        const initialPlaceholder = document.getElementById('initial-placeholder');
-        const previewImage = document.getElementById('preview-image');
         const statusText = document.getElementById('status-text');
         const loader = document.getElementById('loader');
         const resultContainer = document.getElementById('result-container');
@@ -174,72 +116,31 @@
         const manualSearchBtn = document.getElementById('manual-search-btn');
 
         // --- CONFIGURAÇÕES ---
-        const API_URL = 'https://leitor-de-placas-api.onrender.com'; // ATENÇÃO: Use o IP do seu computador aqui
+        const API_URL = 'https://leitor-de-placas-api.onrender.com';
 
         // --- EVENTOS ---
-        activateCameraButton.addEventListener('click', () => cameraInput.click());
-        cameraInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) processImage(file);
-        });
-
         manualSearchBtn.addEventListener('click', () => {
             const plate = manualPlateInput.value.trim().toUpperCase();
             if (plate.length === 7) {
                 queryDatabase(plate);
             } else {
-                statusText.textContent = 'Por favor, digite uma placa válida (7 caracteres).';
-                resultContainer.classList.add('hidden');
-                notFoundContainer.classList.add('hidden');
+                displayError('Por favor, digite uma placa válida (7 caracteres).');
             }
         });
+        
         manualPlateInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') manualSearchBtn.click();
-        });
-
-        // --- PROCESSAMENTO DE IMAGEM (ENVIAR PARA O BACKEND) ---
-        async function processImage(imageFile) {
-            const imageURL = URL.createObjectURL(imageFile);
-            initialPlaceholder.classList.add('hidden');
-            previewImage.src = imageURL;
-            previewImage.classList.remove('hidden');
-
-            resultContainer.classList.add('hidden');
-            notFoundContainer.classList.add('hidden');
-            loader.classList.remove('hidden');
-            statusText.textContent = 'Enviando imagem para análise...';
-
-            const formData = new FormData();
-            formData.append('file', imageFile);
-
-            try {
-                const response = await fetch(`${API_URL}/api/scan`, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.data) {
-                    displaySuccess(result.data);
-                } else {
-                    displayError(result.message);
-                }
-
-            } catch (error) {
-                console.error("Erro ao enviar imagem:", error);
-                displayError('Erro de conexão com o servidor.');
-            } finally {
-                loader.classList.add('hidden');
+            if (event.key === 'Enter') {
+                manualSearchBtn.click();
             }
-        }
-
+        });
+        
         // --- CONSULTA MANUAL (DIRETO AO BACKEND) ---
         async function queryDatabase(plate) {
             loader.classList.remove('hidden');
             statusText.textContent = `Consultando placa: ${plate}...`;
             resultContainer.classList.add('hidden');
             notFoundContainer.classList.add('hidden');
+
             try {
                 const response = await fetch(`${API_URL}/api/plate/${plate}`);
                 const result = await response.json();
@@ -247,7 +148,7 @@
                 if (response.ok && result.data) {
                     displaySuccess(result.data);
                 } else {
-                    displayError(result.message);
+                    displayError(result.message || 'Placa não encontrada.');
                 }
             } catch (error) {
                 console.error("Erro ao consultar a API:", error);
@@ -265,12 +166,14 @@
             document.getElementById('result-contact').textContent = data.contact;
             resultContainer.classList.remove('hidden');
             statusText.textContent = 'Consulta realizada com sucesso!';
+            notFoundContainer.classList.add('hidden'); // Garante que a mensagem de erro suma
         }
 
         function displayError(message) {
             notFoundText.textContent = message;
             notFoundContainer.classList.remove('hidden');
             statusText.textContent = 'Falha na consulta.';
+            resultContainer.classList.add('hidden'); // Esconde resultados anteriores
         }
     </script>
 </body>
