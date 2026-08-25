@@ -37,10 +37,7 @@ O projeto foi estruturado para ser seguro e escalável, separando o frontend (in
     -   Supabase (PostgreSQL)
 
 ---
-## 📝 Teste de Uso
-Site >> https://owsmiithdev.github.io/App-consulta-placas/
-
-Placas de exemplo para Uso: BRA2E19
+## 📝 Placas de exemplo para Uso: BRA2E19
 
 ![Alt text](https://i.imgur.com/b7OuabM.png "a title")
 ---
